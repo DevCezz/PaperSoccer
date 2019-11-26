@@ -5,7 +5,7 @@ public class Board {
     final int boardHeight;
 
     public Board(int halfWidth, int halfHeight) {
-        this.boardWidth = halfWidth * 2;
-        this.boardHeight = halfHeight * 2;
+        this.boardWidth = halfWidth * 2 + 1;
+        this.boardHeight = halfHeight * 2 + 1;
     }
 }

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test;
 
 public class BoardTest {
     @Test
-    void createBoardWhichWidthAndHeightIsTwiceBigger() {
+    void createBoardWhichWidthAndHeightIsTwiceBiggerPlusOneAsPassed() {
         int halfWidth = 5;
         int halfHeight = 10;
 
         Board board = new Board(halfWidth, halfHeight);
 
-        Assertions.assertTrue(board.boardWidth == halfWidth * 2, "Plansza nie jest dwa razy szersza niż podano");
-        Assertions.assertTrue(board.boardHeight == halfHeight * 2, "Plansza nie jest dwa razy wyższa niż podano");
+        Assertions.assertEquals(board.boardWidth, halfWidth * 2 + 1, "Board should be twice wider plus one that it was passed");
+        Assertions.assertEquals(board.boardHeight, halfHeight * 2 + 1, "Board should be twice higher plus one that it was passed");
     }
 }
