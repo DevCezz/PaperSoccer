@@ -35,7 +35,7 @@ public class BoardTest {
     void givenMoveBallToSouthThenBallIsOneDownFromMiddleOfBoard() {
         board.moveBall(2);
 
-        Assertions.assertEquals(board.getBallY(), halfHeight, "Ball should be one down from middle of board");
+        Assertions.assertEquals(board.getBallY(), halfHeight + 2, "Ball should be one down from middle of board");
     }
 
     @Test
@@ -49,6 +49,18 @@ public class BoardTest {
     void givenWrongDirectionOfBallThenRuntimeException() {
         Assertions.assertThrows(RuntimeException.class, () -> {
             board.moveBall(5);
+        });
+    }
+
+    @Test
+    void givenMoveBallOutsideOfBoardThenRuntimeException() {
+        board.moveBall(4);
+        board.moveBall(4);
+        board.moveBall(4);
+        board.moveBall(4);
+
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            board.moveBall(4);
         });
     }
 }
