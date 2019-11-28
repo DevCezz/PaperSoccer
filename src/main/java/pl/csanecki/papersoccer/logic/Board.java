@@ -33,20 +33,10 @@ public class Board {
                 moveSouth();
                 break;
             case 4:
-                if(ballX - 1 >= 0) {
-                    moveWest();
-                } else {
-                    throw new RuntimeException("Ball cannot be outside of board");
-                }
-
+                moveWest();
                 break;
             case 6:
-                if(ballX + 1 < boardWidth) {
-                    moveEast();
-                } else {
-                    throw new RuntimeException("Ball cannot be outside of board");
-                }
-
+                moveEast();
                 break;
             case 7:
                 moveNorth();
@@ -70,19 +60,43 @@ public class Board {
     }
 
     private void moveNorth() {
-        ballY--;
+        if(checkYAxisMovementValidation()) {
+            ballY--;
+        }
     }
 
     private void moveSouth() {
-        ballY++;
+        if(checkYAxisMovementValidation()) {
+            ballY++;
+        }
     }
 
     private void moveWest() {
-        ballX--;
+        if(checkXAxisMovementValidation()) {
+            ballX--;
+        }
     }
 
     private void moveEast() {
-        ballX++;
+        if(checkXAxisMovementValidation()) {
+            ballX++;
+        }
+    }
+
+    private boolean checkYAxisMovementValidation() {
+        if(ballY - 1 >= 0 && ballY + 1 < boardHeight) {
+            return true;
+        }
+
+        throw new RuntimeException("Ball cannot be outside of board");
+    }
+
+    private boolean checkXAxisMovementValidation() {
+        if(ballX - 1 >= 0 && ballX + 1 < boardWidth) {
+            return true;
+        }
+
+        throw new RuntimeException("Ball cannot be outside of board");
     }
 
     public int getBoardWidth() {

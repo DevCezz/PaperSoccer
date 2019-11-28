@@ -141,4 +141,30 @@ public class BoardTest {
             board.moveBall(4);
         });
     }
+
+    @Test
+    void givenMovingOnWestAndFullNorthWhenMoveOutOfBoardThenRuntimeException() {
+        board.moveBall(4);
+
+        for (int i = 0; i < halfHeight; i++) {
+            board.moveBall(8);
+        }
+
+        assertThrows(RuntimeException.class, () -> {
+            board.moveBall(8);
+        });
+    }
+
+    @Test
+    void givenMovingOnWestAndFullSouthWhenMoveOutOfBoardThenRuntimeException() {
+        board.moveBall(4);
+
+        for (int i = 0; i < halfHeight; i++) {
+            board.moveBall(2);
+        }
+
+        assertThrows(RuntimeException.class, () -> {
+            board.moveBall(2);
+        });
+    }
 }
