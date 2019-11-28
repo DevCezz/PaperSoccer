@@ -8,19 +8,20 @@ public class Board {
     private int ballY;
 
     public Board(int halfWidth, int halfHeight) {
-        if(halfWidth < 2) {
-            throw new RuntimeException("Passed to small half width");
-        }
-
-        if(halfHeight < 2) {
-            throw new RuntimeException("Passed to small half height");
-        }
+        checkPassedDimension(halfWidth);
+        checkPassedDimension(halfHeight);
 
         this.boardWidth = halfWidth * 2 + 1;
         this.boardHeight = halfHeight * 2 + 1;
 
         this.ballX = halfWidth;
         this.ballY = halfHeight;
+    }
+
+    private void checkPassedDimension(int dimension) {
+        if(dimension < 2) {
+            throw new RuntimeException("Passed dimension is too small");
+        }
     }
 
     public void moveBall(int direction) {
