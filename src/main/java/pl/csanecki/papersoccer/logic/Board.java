@@ -8,6 +8,14 @@ public class Board {
     private int ballY;
 
     public Board(int halfWidth, int halfHeight) {
+        if(halfWidth < 2) {
+            throw new RuntimeException("Passed to small half width");
+        }
+
+        if(halfHeight < 2) {
+            throw new RuntimeException("Passed to small half height");
+        }
+
         this.boardWidth = halfWidth * 2 + 1;
         this.boardHeight = halfHeight * 2 + 1;
 
@@ -24,10 +32,20 @@ public class Board {
                 moveSouth();
                 break;
             case 4:
-                moveWest();
+                if(ballX - 1 >= 0) {
+                    moveWest();
+                } else {
+                    throw new RuntimeException("Ball cannot be outside of board");
+                }
+
                 break;
             case 6:
-                moveEast();
+                if(ballX + 1 < boardWidth) {
+                    moveEast();
+                } else {
+                    throw new RuntimeException("Ball cannot be outside of board");
+                }
+
                 break;
             case 7:
                 moveNorth();

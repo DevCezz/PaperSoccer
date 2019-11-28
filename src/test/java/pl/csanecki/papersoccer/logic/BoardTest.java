@@ -1,7 +1,9 @@
 package pl.csanecki.papersoccer.logic;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,8 +15,26 @@ public class BoardTest {
     private Board board;
 
     @BeforeEach
-    void initializeBoard() {
-        board = new Board(halfWidth, halfHeight);
+    void initializeBoard(TestInfo testInfo) {
+        if(!testInfo.getTags().contains("SkipSetup")) {
+            board = new Board(halfWidth, halfHeight);
+        }
+    }
+
+    @Test
+    @Tag("SkipSetup")
+    void givenHalfWidthWhenBoardWidthTooSmallThenRuntimeException() {
+        assertThrows(RuntimeException.class, () -> {
+            board = new Board(1, halfHeight);
+        });
+    }
+
+    @Test
+    @Tag("SkipSetup")
+    void givenHalfHeightWhenBoardHeightTooSmallThenRuntimeException() {
+        assertThrows(RuntimeException.class, () -> {
+            board = new Board(halfWidth, 1);
+        });
     }
 
     @Test
@@ -97,6 +117,28 @@ public class BoardTest {
     void givenNotSupportNumberWhenMoveBallThenRuntimeException() {
         assertThrows(RuntimeException.class, () -> {
             board.moveBall(5);
+        });
+    }
+
+    @Test
+    void givenMovingEastWhenMoveOutOfBoardThenRuntimeException() {
+        for (int i = 0; i < halfWidth; i++) {
+            board.moveBall(6);
+        }
+
+        assertThrows(RuntimeException.class, () -> {
+            board.moveBall(6);
+        });
+    }
+
+    @Test
+    void givenMovingWestWhenMoveOutOfBoardThenRuntimeException() {
+        for (int i = 0; i < halfWidth; i++) {
+            board.moveBall(4);
+        }
+
+        assertThrows(RuntimeException.class, () -> {
+            board.moveBall(4);
         });
     }
 }
