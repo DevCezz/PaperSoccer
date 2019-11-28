@@ -11,107 +11,59 @@ public class Board {
         this.boardWidth = halfWidth * 2 + 1;
         this.boardHeight = halfHeight * 2 + 1;
 
-        this.ballX = halfWidth + 1;
-        this.ballY = halfHeight + 1;
+        this.ballX = halfWidth;
+        this.ballY = halfHeight;
     }
 
     public void moveBall(int direction) {
         switch (direction) {
             case 8:
-                moveBallNorth();
-                break;
-            case 9:
-                moveBallNorthEast();
-                break;
-            case 6:
-                moveBallEast();
-                break;
-            case 3:
-                moveBallSouthEast();
+                moveNorth();
                 break;
             case 2:
-                moveBallSouth();
-                break;
-            case 1:
-                moveBallSouthWest();
+                moveSouth();
                 break;
             case 4:
-                moveBallWest();
+                moveWest();
+                break;
+            case 6:
+                moveEast();
                 break;
             case 7:
-                moveBallNorthWest();
+                moveNorth();
+                moveWest();
+                break;
+            case 9:
+                moveNorth();
+                moveEast();
+                break;
+            case 3:
+                moveSouth();
+                moveEast();
+                break;
+            case 1:
+                moveSouth();
+                moveWest();
                 break;
             default:
-                throw new RuntimeException("Niedozwolone przemieszczenie piłki");
+                throw new RuntimeException("Not supported operation on ball");
         }
     }
 
-    private void moveBallNorthEast() {
-        if(ballY - 1 >= 1 || ballX + 1 <= boardWidth) {
-            moveBallNorth();
-            moveBallEast();
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
+    private void moveNorth() {
+        ballY--;
     }
 
-    private void moveBallNorthWest() {
-        if(ballY - 1 >= 1 || ballX - 1 >= 1) {
-            moveBallNorth();
-            moveBallWest();
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
+    private void moveSouth() {
+        ballY++;
     }
 
-    private void moveBallSouthWest() {
-        if(ballY + 1 <= boardHeight || ballX - 1 >= 1) {
-            moveBallSouth();
-            moveBallWest();
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
+    private void moveWest() {
+        ballX--;
     }
 
-    private void moveBallSouthEast() {
-        if(ballY + 1 <= boardHeight || ballX + 1 <= boardWidth) {
-            moveBallSouth();
-            moveBallEast();
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
-    }
-
-    private void moveBallNorth() {
-        if(ballY - 1 >= 1) {
-            ballY--;
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
-    }
-
-    private void moveBallEast() {
-        if(ballX + 1 <= boardWidth) {
-            ballX++;
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
-    }
-
-    private void moveBallSouth() {
-        if(ballY + 1 <= boardHeight) {
-            ballY++;
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
-    }
-
-    private void moveBallWest() {
-        if(ballX - 1 >= 1) {
-            ballX--;
-        } else {
-            throw new RuntimeException("Nie można przesunąć piłkę poza planszę");
-        }
+    private void moveEast() {
+        ballX++;
     }
 
     public int getBoardWidth() {

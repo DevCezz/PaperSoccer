@@ -1,8 +1,10 @@
 package pl.csanecki.papersoccer.logic;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BoardTest {
     private int halfWidth = 4;
@@ -17,50 +19,84 @@ public class BoardTest {
 
     @Test
     void givenHalfWidthThenBoardWidthIsTwiceWiderPlusOne() {
-        Assertions.assertEquals(board.getBoardWidth(), halfWidth * 2 + 1, "Board should be twice wider plus one that it was passed");
+        assertEquals(halfWidth * 2 + 1, board.getBoardWidth(), "Board should be twice wider plus one that it was passed");
     }
 
     @Test
     void givenHalfHeightThenBoardHeightIsTwiceHigherPlusOne() {
-        Assertions.assertEquals(board.getBoardHeight(), halfHeight * 2 + 1, "Board should be twice higher plus one that it was passed");
+        assertEquals(halfHeight * 2 + 1, board.getBoardHeight(), "Board should be twice higher plus one that it was passed");
     }
 
     @Test
     void givenHalfWidthAndHalfHeightThenBallIsInTheMiddleOfBoard() {
-        Assertions.assertEquals(board.getBallX(), halfWidth + 1, "Ball should be in middle of board's width");
-        Assertions.assertEquals(board.getBallY(), halfHeight + 1, "Ball should be in middle of board's height");
+        assertEquals(halfWidth, board.getBallX(), "Ball should be in middle of board's width");
+        assertEquals(halfHeight, board.getBallY(), "Ball should be in middle of board's height");
     }
 
     @Test
-    void givenMoveBallToSouthThenBallIsOneDownFromMiddleOfBoard() {
+    void given8WhenMoveBallThenBallMovesToNorth() {
+        board.moveBall(8);
+
+        assertEquals(halfHeight - 1, board.getBallY(), "Ball should be one top from middle of board");
+    }
+
+    @Test
+    void given2WhenMoveBallThenBallMovesToSouth() {
         board.moveBall(2);
 
-        Assertions.assertEquals(board.getBallY(), halfHeight + 2, "Ball should be one down from middle of board");
+        assertEquals(halfHeight + 1, board.getBallY(), "Ball should be one bottom from middle of board");
     }
 
     @Test
-    void givenMoveBallToEastThenBallIsOneRightFromMiddleOfBoard() {
+    void given4WhenMoveBallThenBallMovesToWest() {
+        board.moveBall(4);
+
+        assertEquals(halfWidth - 1, board.getBallX(), "Ball should be one left from middle of board");
+    }
+
+    @Test
+    void given6WhenMoveBallThenBallMovesToEast() {
         board.moveBall(6);
 
-        Assertions.assertEquals(board.getBallX(), halfWidth + 2, "Ball should be one right from middle of board");
+        assertEquals(halfWidth + 1, board.getBallX(), "Ball should be one right from middle of board");
     }
 
     @Test
-    void givenWrongDirectionOfBallThenRuntimeException() {
-        Assertions.assertThrows(RuntimeException.class, () -> {
+    void given7WhenMoveBallThenBallMovesToNorthEast() {
+        board.moveBall(7);
+
+        assertEquals(halfWidth - 1, board.getBallX(), "Ball should be one left from middle of board");
+        assertEquals(halfHeight - 1, board.getBallY(), "Ball should be one top from middle of board");
+    }
+
+    @Test
+    void given9WhenMoveBallThenBallMovesToNorthWest() {
+        board.moveBall(9);
+
+        assertEquals(halfWidth + 1, board.getBallX(), "Ball should be one right from middle of board");
+        assertEquals(halfHeight - 1, board.getBallY(), "Ball should be one top from middle of board");
+    }
+
+    @Test
+    void given3WhenMoveBallThenBallMovesToSouthWest() {
+        board.moveBall(3);
+
+        assertEquals(halfWidth + 1, board.getBallX(), "Ball should be one right from middle of board");
+        assertEquals(halfHeight + 1, board.getBallY(), "Ball should be one bottom from middle of board");
+    }
+
+    @Test
+    void given1WhenMoveBallThenBallMovesToSouthEast() {
+        board.moveBall(1);
+
+        assertEquals(halfWidth - 1, board.getBallX(), "Ball should be one left from middle of board");
+        assertEquals(halfHeight + 1, board.getBallY(), "Ball should be one bottom from middle of board");
+    }
+
+    @Test
+    void givenNotSupportNumberWhenMoveBallThenRuntimeException() {
+        assertThrows(RuntimeException.class, () -> {
             board.moveBall(5);
-        });
-    }
-
-    @Test
-    void givenMoveBallOutsideOfBoardThenRuntimeException() {
-        board.moveBall(4);
-        board.moveBall(4);
-        board.moveBall(4);
-        board.moveBall(4);
-
-        Assertions.assertThrows(RuntimeException.class, () -> {
-            board.moveBall(4);
         });
     }
 }
