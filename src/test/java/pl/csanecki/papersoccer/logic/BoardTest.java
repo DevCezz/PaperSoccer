@@ -106,4 +106,64 @@ public class BoardTest {
         assertEquals((height / 2) + 1, board.getBallY());
         assertEquals((width / 2) + 1, board.getBallX());
     }
+
+    @Test
+    void givenBallOnLeftEdgeOfBoardWhenMoveWestThenRuntimeException() {
+        for(int i = 0; i < width / 2; i++) {
+            board.play(4);
+        }
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.play(4);
+        }, "The ball is not outside of board");
+
+        assertEquals("Cannot move ball outside of board", exception.getMessage());
+    }
+
+    @Test
+    void givenBallOnRightEdgeOfBoardWhenMoveEastThenRuntimeException() {
+        for(int i = 0; i < width / 2; i++) {
+            board.play(6);
+        }
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.play(6);
+        }, "The ball is not outside of board");
+
+        assertEquals("Cannot move ball outside of board", exception.getMessage());
+    }
+
+    @Test
+    void givenBallOnTopLeftCornerOfBoardWhenMoveNorthThenRuntimeException() {
+        for(int i = 0; i < width / 2; i++) {
+            board.play(4);
+        }
+
+        for(int i = 0; i < height / 2; i++) {
+            board.play(8);
+        }
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.play(8);
+        }, "The ball is not outside of board");
+
+        assertEquals("Cannot move ball outside of board", exception.getMessage());
+    }
+
+    @Test
+    void givenBallOnBottomLeftCornerOfBoardWhenMoveSouthThenRuntimeException() {
+        for(int i = 0; i < width / 2; i++) {
+            board.play(4);
+        }
+
+        for(int i = 0; i < height / 2; i++) {
+            board.play(2);
+        }
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.play(2);
+        }, "The ball is not outside of board");
+
+        assertEquals("Cannot move ball outside of board", exception.getMessage());
+    }
 }

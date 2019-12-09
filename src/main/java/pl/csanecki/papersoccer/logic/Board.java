@@ -50,21 +50,37 @@ public class Board {
                 moveSouthWest();
                 break;
             case 2:
+                if(ballY + 1 > height) {
+                    throw new RuntimeException("Cannot move ball outside of board");
+                }
+
                 moveSouth();
                 break;
             case 3:
                 moveSouthEast();
                 break;
             case 4:
+                if(ballX - 1 < 0) {
+                    throw new RuntimeException("Cannot move ball outside of board");
+                }
+
                 moveWest();
                 break;
             case 6:
+                if(ballX + 1 > width) {
+                    throw new RuntimeException("Cannot move ball outside of board");
+                }
+
                 moveEast();
                 break;
             case 7:
                 moveNorthWest();
                 break;
             case 8:
+                if(ballY - 1 < 0) {
+                    throw new RuntimeException("Cannot move ball outside of board");
+                }
+
                 moveNorth();
                 break;
             case 9:
