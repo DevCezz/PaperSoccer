@@ -28,23 +28,7 @@ public class Board {
         }
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public int getBallX() {
-        return ballX;
-    }
-
-    public int getBallY() {
-        return ballY;
-    }
-
-    public void play(int move) {
+    public String play(int move) {
         switch (move) {
             case 1:
                 moveSouthWest();
@@ -87,6 +71,8 @@ public class Board {
                 moveNorthEast();
                 break;
         }
+
+        return "Player One";
     }
 
     private void moveNorthWest() {
@@ -123,5 +109,21 @@ public class Board {
 
     private void moveEast() {
         ballX++;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getBallX() {
+        return ballX;
+    }
+
+    public int getBallY() {
+        return ballY;
     }
 }
