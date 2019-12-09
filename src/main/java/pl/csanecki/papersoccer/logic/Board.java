@@ -47,33 +47,65 @@ public class Board {
     public void play(int move) {
         switch (move) {
             case 1:
-                ballY++;
-                ballX--;
+                moveSouthWest();
                 break;
             case 2:
-                ballY++;
+                moveSouth();
                 break;
             case 3:
-                ballY++;
-                ballX++;
+                moveSouthEast();
                 break;
             case 4:
-                ballX--;
+                moveWest();
                 break;
             case 6:
-                ballX++;
+                moveEast();
                 break;
             case 7:
-                ballY--;
-                ballX--;
+                moveNorthWest();
                 break;
             case 8:
-                ballY--;
+                moveNorth();
                 break;
             case 9:
-                ballY--;
-                ballX++;
+                moveNorthEast();
                 break;
         }
+    }
+
+    private void moveNorthWest() {
+        moveNorth();
+        moveWest();
+    }
+
+    private void moveNorthEast() {
+        moveNorth();
+        moveEast();
+    }
+
+    private void moveSouthWest() {
+        moveSouth();
+        moveWest();
+    }
+
+    private void moveSouthEast() {
+        moveSouth();
+        moveEast();
+    }
+
+    private void moveNorth() {
+        ballY--;
+    }
+
+    private void moveSouth() {
+        ballY++;
+    }
+
+    private void moveWest() {
+        ballX--;
+    }
+
+    private void moveEast() {
+        ballX++;
     }
 }
