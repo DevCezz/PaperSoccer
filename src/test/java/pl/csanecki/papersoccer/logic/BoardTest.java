@@ -166,15 +166,4 @@ public class BoardTest {
 
         assertEquals("Cannot move ball outside of board", exception.getMessage());
     }
-
-    @Test
-    void givenMovedBallLeftWhenMoveRightThenRuntimeException() {
-        board.play(4);
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            board.play(6);
-        }, "This should be forbidden move");
-
-        assertEquals("This edge has been already used", exception.getMessage());
-    }
 }

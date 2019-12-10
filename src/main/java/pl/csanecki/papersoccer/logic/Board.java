@@ -34,38 +34,34 @@ public class Board {
                 moveSouthWest();
                 break;
             case 2:
-                if(ballY + 1 > height) {
-                    throw new RuntimeException("Cannot move ball outside of board");
+                if (checkSouthMove()) {
+                    moveSouth();
                 }
 
-                moveSouth();
                 break;
             case 3:
                 moveSouthEast();
                 break;
             case 4:
-                if(ballX - 1 < 0) {
-                    throw new RuntimeException("Cannot move ball outside of board");
+                if(checkWestMove()) {
+                    moveWest();
                 }
 
-                moveWest();
                 break;
             case 6:
-                if(ballX + 1 > width) {
-                    throw new RuntimeException("Cannot move ball outside of board");
+                if(checkEastMove()) {
+                    moveEast();
                 }
 
-                moveEast();
                 break;
             case 7:
                 moveNorthWest();
                 break;
             case 8:
-                if(ballY - 1 < 0) {
-                    throw new RuntimeException("Cannot move ball outside of board");
+                if (checkNorthMove()) {
+                    moveNorth();
                 }
 
-                moveNorth();
                 break;
             case 9:
                 moveNorthEast();
@@ -73,6 +69,38 @@ public class Board {
         }
 
         return "Player One";
+    }
+
+    private boolean checkSouthMove() {
+        if(ballY + 1 > height) {
+            throw new RuntimeException("Cannot move ball outside of board");
+        }
+
+        return true;
+    }
+
+    private boolean checkNorthMove() {
+        if(ballY - 1 < 0) {
+            throw new RuntimeException("Cannot move ball outside of board");
+        }
+
+        return true;
+    }
+
+    private boolean checkEastMove() {
+        if(ballX + 1 > width) {
+            throw new RuntimeException("Cannot move ball outside of board");
+        }
+
+        return true;
+    }
+
+    private boolean checkWestMove() {
+        if(ballX - 1 < 0) {
+            throw new RuntimeException("Cannot move ball outside of board");
+        }
+
+        return true;
     }
 
     private void moveNorthWest() {
