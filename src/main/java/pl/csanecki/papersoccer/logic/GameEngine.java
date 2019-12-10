@@ -1,6 +1,6 @@
 package pl.csanecki.papersoccer.logic;
 
-public class Board {
+public class GameEngine {
     private final static int MIN_DIMENSION = 4;
 
     private final int width;
@@ -9,7 +9,7 @@ public class Board {
     private int ballX;
     private int ballY;
 
-    public Board(int width, int height) {
+    public GameEngine(int width, int height) {
         checkDimension(width);
         checkDimension(height);
 
