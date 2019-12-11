@@ -22,7 +22,7 @@ public class Board {
         }
 
         boardNodes.put(new Coordinate(width / 2, -1), Node.PLAYER_ONE_GOAL);
-        boardNodes.put(new Coordinate(width / 2, height + 1), Node.PLAYER_ONE_GOAL);
+        boardNodes.put(new Coordinate(width / 2, height + 1), Node.PLAYER_TWO_GOAL);
     }
 
     private void setBallInTheMiddle(int width, int height) {

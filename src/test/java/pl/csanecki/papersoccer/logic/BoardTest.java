@@ -162,6 +162,37 @@ public class BoardTest {
     }
 
     @Test
+    void givenMoveBallDownToBoardEdgeWhenMoveBallDownThenWinner() {
+        for (int i = 0; i < height / 2; i++) {
+            board.moveBall(2);
+        }
+
+        assertEquals("Player1 Wins", board.moveBall(2));
+    }
+
+    @Test
+    void givenMoveBallDownToBoardAndOneLeftWhenMoveBallDowRightThenWinner() {
+        for (int i = 0; i < height / 2; i++) {
+            board.moveBall(2);
+        }
+
+        board.moveBall(4);
+
+        assertEquals("Player1 Wins", board.moveBall(3));
+    }
+
+    @Test
+    void givenMoveBallDownToBoardAndOneRightWhenMoveBallDownLeftThenWinner() {
+        for (int i = 0; i < height / 2; i++) {
+            board.moveBall(2);
+        }
+
+        board.moveBall(6);
+
+        assertEquals("Player1 Wins", board.moveBall(1));
+    }
+
+    @Test
     void whenMoveBallAndNoWinnerThenGameUnderway() {
         assertEquals("Game Underway", board.moveBall(4));
     }
