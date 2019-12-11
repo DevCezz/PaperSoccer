@@ -8,7 +8,7 @@ import java.util.Set;
 public class Board {
     private Map<Coordinate, Node> boardNodes;
     private Set<Edge> usedEdges;
-    private Coordinate ballCoordinates;
+    private Coordinate ballCoordinate;
 
     public Board(int width, int height) {
         this.usedEdges = new HashSet<>();
@@ -34,12 +34,12 @@ public class Board {
         int middleOfWidth = (width) / 2;
         int middleOfHeight = (height) / 2;
 
-        ballCoordinates = new Coordinate(middleOfWidth, middleOfHeight);
+        ballCoordinate = new Coordinate(middleOfWidth, middleOfHeight);
     }
 
     public String moveBall(int move) {
-        int currentBallX = ballCoordinates.getX();
-        int currentBallY = ballCoordinates.getY();
+        int currentBallX = ballCoordinate.getX();
+        int currentBallY = ballCoordinate.getY();
 
         Coordinate checkCoordinate;
 
@@ -79,15 +79,10 @@ public class Board {
         Node checkNode = boardNodes.get(checkCoordinate);
 
         if(checkNode == Node.PLAIN_FIELD) {
-            Edge edge = new Edge(checkCoordinate, ballCoordinates);
+            Edge edge = new Edge(checkCoordinate, ballCoordinate);
+            checkEdgeUsage(edge);
 
-            if(usedEdges.contains(edge)) {
-                throw new RuntimeException("Not allowed to move on the same edge");
-            } else {
-                usedEdges.add(edge);
-            }
-
-            ballCoordinates = checkCoordinate;
+            setNewBallCoordinates(checkCoordinate);
 
             return "Game Underway";
         } else if(checkNode == Node.PLAYER_ONE_GOAL) {
@@ -99,7 +94,19 @@ public class Board {
         }
     }
 
+    private void checkEdgeUsage(Edge edge) {
+        if(usedEdges.contains(edge)) {
+            throw new RuntimeException("Not allowed to move on the same edge");
+        } else {
+            usedEdges.add(edge);
+        }
+    }
+
+    private void setNewBallCoordinates(Coordinate coordinate) {
+        this.ballCoordinate = coordinate;
+    }
+
     public Coordinate getBallCoordinates() {
-        return this.ballCoordinates;
+        return this.ballCoordinate;
     }
 }
