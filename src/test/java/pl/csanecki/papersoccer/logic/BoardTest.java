@@ -25,7 +25,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallDownLeftThenNodeOnTheDownLeftFromMiddleHasBall() {
-        board.play(1);
+        board.moveBall(1);
 
         Coordinate expected = new Coordinate(width / 2 - 1, height / 2 + 1);
 
@@ -34,7 +34,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallDownThenNodeOnTheDownFromMiddleHasBall() {
-        board.play(2);
+        board.moveBall(2);
 
         Coordinate expected = new Coordinate(width / 2, height / 2 + 1);
 
@@ -43,7 +43,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallDownRightThenNodeOnTheDownRightFromMiddleHasBall() {
-        board.play(3);
+        board.moveBall(3);
 
         Coordinate expected = new Coordinate(width / 2 + 1, height / 2 + 1);
 
@@ -52,7 +52,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallLeftThenNodeOnTheLeftFromMiddleHasBall() {
-        board.play(4);
+        board.moveBall(4);
 
         Coordinate expected = new Coordinate(width / 2 - 1, height / 2);
 
@@ -61,7 +61,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallRightThenNodeOnTheRightFromMiddleHasBall() {
-        board.play(6);
+        board.moveBall(6);
 
         Coordinate expected = new Coordinate(width / 2 + 1, height / 2);
 
@@ -70,7 +70,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallTopLeftThenNodeOnTheTopLeftFromMiddleHasBall() {
-        board.play(7);
+        board.moveBall(7);
 
         Coordinate expected = new Coordinate(width / 2 - 1, height / 2 - 1);
 
@@ -79,7 +79,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallTopThenNodeOnTheTopFromMiddleHasBall() {
-        board.play(8);
+        board.moveBall(8);
 
         Coordinate expected = new Coordinate(width / 2, height / 2 - 1);
 
@@ -88,7 +88,7 @@ public class BoardTest {
 
     @Test
     void whenMoveBallTopRightThenNodeOnTheTopRightFromMiddleHasBall() {
-        board.play(9);
+        board.moveBall(9);
 
         Coordinate expected = new Coordinate(width / 2 + 1, height / 2 - 1);
 
@@ -98,7 +98,7 @@ public class BoardTest {
     @Test
     void whenNotAllowedMovementThenRuntimeException() {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            board.play(5);
+            board.moveBall(5);
         }, "The movement is incorrectly allowed");
 
         assertEquals("Not allowed movement of ball", exception.getMessage());
@@ -107,11 +107,11 @@ public class BoardTest {
     @Test
     void givenMoveBallLeftToBoardWhenMoveBallLeftThenRuntimeException() {
         for (int i = 0; i < width / 2; i++) {
-            board.play(4);
+            board.moveBall(4);
         }
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            board.play(4);
+            board.moveBall(4);
         }, "The movement is incorrectly allowed");
 
         assertEquals("Not allowed to move out of board", exception.getMessage());
@@ -120,11 +120,11 @@ public class BoardTest {
     @Test
     void givenMoveBallRightToBoardWhenMoveBallRightThenRuntimeException() {
         for (int i = 0; i < width / 2; i++) {
-            board.play(6);
+            board.moveBall(6);
         }
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            board.play(6);
+            board.moveBall(6);
         }, "The movement is incorrectly allowed");
 
         assertEquals("Not allowed to move out of board", exception.getMessage());
@@ -133,36 +133,36 @@ public class BoardTest {
     @Test
     void givenMoveBallTopToBoardEdgeWhenMoveBallTopThenWinner() {
         for (int i = 0; i < height / 2; i++) {
-            board.play(8);
+            board.moveBall(8);
         }
 
-        assertEquals("Player2 Wins", board.play(8));
+        assertEquals("Player2 Wins", board.moveBall(8));
     }
 
     @Test
     void givenMoveBallTopToBoardAndOneLeftWhenMoveBallTopRightThenWinner() {
         for (int i = 0; i < height / 2; i++) {
-            board.play(8);
+            board.moveBall(8);
         }
 
-        board.play(4);
+        board.moveBall(4);
 
-        assertEquals("Player2 Wins", board.play(9));
+        assertEquals("Player2 Wins", board.moveBall(9));
     }
 
     @Test
     void givenMoveBallTopToBoardAndOneRightWhenMoveBallTopLeftThenWinner() {
         for (int i = 0; i < height / 2; i++) {
-            board.play(8);
+            board.moveBall(8);
         }
 
-        board.play(6);
+        board.moveBall(6);
 
-        assertEquals("Player2 Wins", board.play(7));
+        assertEquals("Player2 Wins", board.moveBall(7));
     }
 
     @Test
     void whenMoveBallAndNoWinnerThenGameUnderway() {
-        assertEquals("Game Underway", board.play(4));
+        assertEquals("Game Underway", board.moveBall(4));
     }
 }

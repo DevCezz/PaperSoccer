@@ -4,18 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Board {
-    private int boardWidth;
-    private int boardHeight;
-
     private Map<Coordinate, Node> boardNodes;
     private Coordinate ballCoordinates;
 
     public Board(int width, int height) {
-        this.boardWidth = width;
-        this.boardHeight = height;
-
         initializeNodesNetwork(width, height);
-        setBallInTheMiddle();
+        setBallInTheMiddle(width, height);
     }
 
     private void initializeNodesNetwork(int width, int height) {
@@ -26,77 +20,69 @@ public class Board {
                 boardNodes.put(new Coordinate(x, y), Node.PLAIN_FIELD);
             }
         }
+
+        boardNodes.put(new Coordinate(width / 2, -1), Node.PLAYER_ONE_GOAL);
+        boardNodes.put(new Coordinate(width / 2, height + 1), Node.PLAYER_ONE_GOAL);
     }
 
-    private void setBallInTheMiddle() {
-        int middleOfWidth = (boardWidth) / 2;
-        int middleOfHeight = (boardHeight) / 2;
+    private void setBallInTheMiddle(int width, int height) {
+        int middleOfWidth = (width) / 2;
+        int middleOfHeight = (height) / 2;
 
         ballCoordinates = new Coordinate(middleOfWidth, middleOfHeight);
     }
 
-    public String play(int move) {
-        if(ballCoordinates.getX() == getBoardWidth() / 2 && ballCoordinates.getY() == 0 && move == 8) {
-            return "Player2 Wins";
-        }
-
-        if(ballCoordinates.getX() == getBoardWidth() / 2 - 1 && ballCoordinates.getY() == 0 && move == 9) {
-            return "Player2 Wins";
-        }
-
-        if(ballCoordinates.getX() == getBoardWidth() / 2 + 1 && ballCoordinates.getY() == 0 && move == 7) {
-            return "Player2 Wins";
-        }
-
-        moveBall(move);
-
-        return "Game Underway";
-    }
-
-    private void moveBall(int move) {
+    public String moveBall(int move) {
         int currentBallX = ballCoordinates.getX();
         int currentBallY = ballCoordinates.getY();
 
+        Coordinate checkCoordinate;
+
         switch (move) {
             case 1:
-                ballCoordinates = new Coordinate( currentBallX - 1, currentBallY + 1);
+                checkCoordinate = new Coordinate(currentBallX - 1, currentBallY + 1);
                 break;
             case 2:
-                ballCoordinates = new Coordinate( currentBallX, currentBallY + 1);
+                checkCoordinate = new Coordinate(currentBallX, currentBallY + 1);
                 break;
             case 3:
-                ballCoordinates = new Coordinate( currentBallX + 1, currentBallY + 1);
+                checkCoordinate = new Coordinate(currentBallX + 1, currentBallY + 1);
                 break;
             case 4:
-                if(currentBallX - 1 < 0) {
-                    throw new RuntimeException("Not allowed to move out of board");
-                }
-
-                ballCoordinates = new Coordinate( currentBallX - 1, currentBallY);
+                checkCoordinate = new Coordinate(currentBallX - 1, currentBallY);
                 break;
             case 6:
-                if(currentBallX + 1 > getBoardWidth()) {
-                    throw new RuntimeException("Not allowed to move out of board");
-                }
-
-                ballCoordinates = new Coordinate( currentBallX + 1, currentBallY);
+                checkCoordinate = new Coordinate(currentBallX + 1, currentBallY);
                 break;
             case 7:
-                ballCoordinates = new Coordinate( currentBallX - 1, currentBallY - 1);
+                checkCoordinate = new Coordinate(currentBallX - 1, currentBallY - 1);
                 break;
             case 8:
-                ballCoordinates = new Coordinate( currentBallX, currentBallY - 1);
+                checkCoordinate = new Coordinate(currentBallX, currentBallY - 1);
                 break;
             case 9:
-                ballCoordinates = new Coordinate( currentBallX + 1, currentBallY - 1);
+                checkCoordinate = new Coordinate(currentBallX + 1, currentBallY - 1);
                 break;
             default:
                 throw new RuntimeException("Not allowed movement of ball");
         }
+
+        return checkResultOfMovement(checkCoordinate);
     }
 
-    public int getBoardWidth() {
-        return this.boardWidth;
+    private String checkResultOfMovement(Coordinate checkCoordinate) {
+        Node checkNode = boardNodes.get(checkCoordinate);
+
+        if(checkNode == Node.PLAIN_FIELD) {
+            ballCoordinates = checkCoordinate;
+            return "Game Underway";
+        } else if(checkNode == Node.PLAYER_ONE_GOAL) {
+            return "Player2 Wins";
+        } else if(checkNode == Node.PLAYER_TWO_GOAL) {
+            return "Player1 Wins";
+        } else {
+            throw new RuntimeException("Not allowed to move out of board");
+        }
     }
 
     public Coordinate getBallCoordinates() {
