@@ -6,19 +6,14 @@ import org.junit.jupiter.api.Test;
 import static org.springframework.test.util.AssertionErrors.*;
 
 public class EdgeTest {
-    private int firstNodeX = 3;
-    private int firstNodeY = 4;
-    private int secondNodeX = 4;
-    private int secondNodeY = 4;
-
     private Node firstNode;
     private Node secondNode;
     private Edge edge;
 
     @BeforeEach
     void setUp() {
-        firstNode = new Node(firstNodeX, firstNodeY);
-        secondNode = new Node(secondNodeX, secondNodeY);
+        firstNode = new Node();
+        secondNode = new Node();
 
         edge = new Edge(firstNode, secondNode);
     }

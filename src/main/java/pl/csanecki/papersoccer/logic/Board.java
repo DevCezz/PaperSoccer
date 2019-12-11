@@ -1,88 +1,105 @@
 package pl.csanecki.papersoccer.logic;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Board {
-    private Node[][] nodesNetwork;
-    private Node ballNode;
+    private int boardWidth;
+    private int boardHeight;
+
+    private Map<Coordinate, Node> boardNodes;
+    private Coordinate ballCoordinates;
 
     public Board(int width, int height) {
-        nodesNetwork = new Node[width + 1][height + 1];
+        this.boardWidth = width;
+        this.boardHeight = height;
+
         initializeNodesNetwork(width, height);
-    }
-
-    private void initializeNodesNetwork(int width, int height) {
-        for (int x = 0; x < width + 1; x++) {
-            for (int y = 0; y < height + 1; y++) {
-                nodesNetwork[x][y] = new Node(x, y);
-            }
-        }
-
         setBallInTheMiddle();
     }
 
-    private void setBallInTheMiddle() {
-        int middleOfWidth = (nodesNetwork.length - 1) / 2;
-        int middleOfHeight = (nodesNetwork[0].length - 1) / 2;
+    private void initializeNodesNetwork(int width, int height) {
+        boardNodes = new HashMap<>();
 
-        ballNode = nodesNetwork[middleOfWidth][middleOfHeight];
-        ballNode.setContainsBall(true);
+        for (int x = 0; x < width + 1; x++) {
+            for (int y = 0; y < height + 1; y++) {
+                boardNodes.put(new Coordinate(x, y), new Node());
+            }
+        }
     }
 
-    public String moveBall(int move) {
-        if(ballNode.getX() == getBoardWidth() / 2 && ballNode.getY() == 0 && move == 8) {
+    private void setBallInTheMiddle() {
+        int middleOfWidth = (boardWidth) / 2;
+        int middleOfHeight = (boardHeight) / 2;
+
+        ballCoordinates = new Coordinate(middleOfWidth, middleOfHeight);
+    }
+
+    public String play(int move) {
+        if(ballCoordinates.getX() == getBoardWidth() / 2 && ballCoordinates.getY() == 0 && move == 8) {
             return "Player2 Wins";
         }
 
-        if(ballNode.getX() == getBoardWidth() / 2 - 1 && ballNode.getY() == 0 && move == 9) {
+        if(ballCoordinates.getX() == getBoardWidth() / 2 - 1 && ballCoordinates.getY() == 0 && move == 9) {
             return "Player2 Wins";
         }
 
-        if(ballNode.getX() == getBoardWidth() / 2 + 1 && ballNode.getY() == 0 && move == 7) {
+        if(ballCoordinates.getX() == getBoardWidth() / 2 + 1 && ballCoordinates.getY() == 0 && move == 7) {
             return "Player2 Wins";
         }
 
-        ballNode.setContainsBall(false);
-        ballNode = getNodeAfterMove(move);
-        ballNode.setContainsBall(true);
+        moveBall(move);
 
         return "Game Underway";
     }
 
-    private Node getNodeAfterMove(int move) {
+    private void moveBall(int move) {
+        int currentBallX = ballCoordinates.getX();
+        int currentBallY = ballCoordinates.getY();
+
         switch (move) {
             case 1:
-                return nodesNetwork[ballNode.getX() - 1][ballNode.getY() + 1];
+                ballCoordinates = new Coordinate( currentBallX - 1, currentBallY + 1);
+                break;
             case 2:
-                return nodesNetwork[ballNode.getX()][ballNode.getY() + 1];
+                ballCoordinates = new Coordinate( currentBallX, currentBallY + 1);
+                break;
             case 3:
-                return nodesNetwork[ballNode.getX() + 1][ballNode.getY() + 1];
+                ballCoordinates = new Coordinate( currentBallX + 1, currentBallY + 1);
+                break;
             case 4:
-                if(ballNode.getX() - 1 < 0) {
+                if(currentBallX - 1 < 0) {
                     throw new RuntimeException("Not allowed to move out of board");
                 }
 
-                return nodesNetwork[ballNode.getX() - 1][ballNode.getY()];
+                ballCoordinates = new Coordinate( currentBallX - 1, currentBallY);
+                break;
             case 6:
-                if(ballNode.getX() + 1 > getBoardWidth()) {
+                if(currentBallX + 1 > getBoardWidth()) {
                     throw new RuntimeException("Not allowed to move out of board");
                 }
 
-                return nodesNetwork[ballNode.getX() + 1][ballNode.getY()];
+                ballCoordinates = new Coordinate( currentBallX + 1, currentBallY);
+                break;
             case 7:
-                return nodesNetwork[ballNode.getX() - 1][ballNode.getY() - 1];
+                ballCoordinates = new Coordinate( currentBallX - 1, currentBallY - 1);
+                break;
             case 8:
-                return nodesNetwork[ballNode.getX()][ballNode.getY() - 1];
+                ballCoordinates = new Coordinate( currentBallX, currentBallY - 1);
+                break;
             case 9:
-                return nodesNetwork[ballNode.getX() + 1][ballNode.getY() - 1];
+                ballCoordinates = new Coordinate( currentBallX + 1, currentBallY - 1);
+                break;
+            default:
+                throw new RuntimeException("Not allowed movement of ball");
         }
-
-        throw new RuntimeException("Not allowed movement of ball");
     }
 
-    private int getBoardWidth() {
-        return nodesNetwork.length - 1;
+    public int getBoardWidth() {
+        return this.boardWidth;
     }
 
-    public Node[][] getNodesNetwork() {
-        return nodesNetwork;
+    public Coordinate getBallCoordinates() {
+        return this.ballCoordinates;
     }
 }
