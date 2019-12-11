@@ -207,4 +207,19 @@ public class BoardTest {
 
         assertEquals("Not allowed to move on the same edge", exception.getMessage());
     }
+
+    @Test
+    void givenNoMoreAvailableMovementThenMoveBallToStartingPosition() {
+        for (int i = 0; i < height / 2 - 1; i++) {
+            board.moveBall(2);
+        }
+        for (int i = 0; i < width / 2 - 1; i++) {
+            board.moveBall(6);
+        }
+        board.moveBall(3);
+
+        Coordinate expected = new Coordinate(width / 2, height / 2);
+
+        assertEquals(expected, board.getBallCoordinates(), "Ball was not restarted");
+    }
 }
