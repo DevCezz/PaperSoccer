@@ -24,6 +24,33 @@ public class BoardTest {
     }
 
     @Test
+    void whenMoveBallDownLeftThenNodeOnTheDownLeftFromMiddleHasBall() {
+        board.play(1);
+
+        Coordinate expected = new Coordinate(width / 2 - 1, height / 2 + 1);
+
+        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved down and left");
+    }
+
+    @Test
+    void whenMoveBallDownThenNodeOnTheDownFromMiddleHasBall() {
+        board.play(2);
+
+        Coordinate expected = new Coordinate(width / 2, height / 2 + 1);
+
+        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved down");
+    }
+
+    @Test
+    void whenMoveBallDownRightThenNodeOnTheDownRightFromMiddleHasBall() {
+        board.play(3);
+
+        Coordinate expected = new Coordinate(width / 2 + 1, height / 2 + 1);
+
+        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved down and right");
+    }
+
+    @Test
     void whenMoveBallLeftThenNodeOnTheLeftFromMiddleHasBall() {
         board.play(4);
 
@@ -42,39 +69,21 @@ public class BoardTest {
     }
 
     @Test
-    void whenMoveBallTopThenNodeOnTheTopFromMiddleHasBall() {
-        board.play(8);
-
-        Coordinate expected = new Coordinate(width / 2, height / 2 - 1);
-
-        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved up");
-    }
-
-    @Test
-    void whenMoveBallDownThenNodeOnTheDownFromMiddleHasBall() {
-        board.play(2);
-
-        Coordinate expected = new Coordinate(width / 2, height / 2 + 1);
-
-        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved down");
-    }
-
-    @Test
-    void whenNotAllowedMovementThenRuntimeException() {
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            board.play(5);
-        }, "The movement is incorrectly allowed");
-
-        assertEquals("Not allowed movement of ball", exception.getMessage());
-    }
-
-    @Test
     void whenMoveBallTopLeftThenNodeOnTheTopLeftFromMiddleHasBall() {
         board.play(7);
 
         Coordinate expected = new Coordinate(width / 2 - 1, height / 2 - 1);
 
         assertEquals(expected, board.getBallCoordinates(), "Ball was not moved up and left");
+    }
+
+    @Test
+    void whenMoveBallTopThenNodeOnTheTopFromMiddleHasBall() {
+        board.play(8);
+
+        Coordinate expected = new Coordinate(width / 2, height / 2 - 1);
+
+        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved up");
     }
 
     @Test
@@ -87,21 +96,12 @@ public class BoardTest {
     }
 
     @Test
-    void whenMoveBallDownLeftThenNodeOnTheDownLeftFromMiddleHasBall() {
-        board.play(1);
+    void whenNotAllowedMovementThenRuntimeException() {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.play(5);
+        }, "The movement is incorrectly allowed");
 
-        Coordinate expected = new Coordinate(width / 2 - 1, height / 2 + 1);
-
-        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved down and left");
-    }
-
-    @Test
-    void whenMoveBallDownRightThenNodeOnTheDownRightFromMiddleHasBall() {
-        board.play(3);
-
-        Coordinate expected = new Coordinate(width / 2 + 1, height / 2 + 1);
-
-        assertEquals(expected, board.getBallCoordinates(), "Ball was not moved down and right");
+        assertEquals("Not allowed movement of ball", exception.getMessage());
     }
 
     @Test
