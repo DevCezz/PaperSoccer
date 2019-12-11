@@ -23,7 +23,7 @@ public class Board {
 
         for (int x = 0; x < width + 1; x++) {
             for (int y = 0; y < height + 1; y++) {
-                boardNodes.put(new Coordinate(x, y), new Node());
+                boardNodes.put(new Coordinate(x, y), Node.PLAIN_FIELD);
             }
         }
     }
