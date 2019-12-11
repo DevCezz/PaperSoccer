@@ -36,4 +36,15 @@ public class NodeTest {
         node.setContainsBall(true);
         assertTrue("Node should contain ball", node.containsBall());
     }
+
+    @Test
+    void givenSetContainsBallThenNodeIsNotGoal() {
+        assertFalse("Node cannot contains ball at start", node.isGoal());
+    }
+
+    @Test
+    void givenSetIsGoalThenNodeIsGoal() {
+        node.setIsGoal(true);
+        assertTrue("Node cannot contains ball at start", node.isGoal());
+    }
 }

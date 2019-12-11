@@ -1,14 +1,16 @@
 package pl.csanecki.papersoccer.logic;
 
+import java.util.Objects;
+
 public class Node {
-    private int x;
-    private int y;
+    private Coordinate coordinate;
     private boolean containsBall;
+    private boolean goal;
 
     public Node(int x, int y, boolean containsBall) {
-        this.x = x;
-        this.y = y;
+        this.coordinate = new Coordinate(x, y);
         this.containsBall = containsBall;
+        this.goal = false;
     }
 
     public Node(int x, int y) {
@@ -23,33 +25,32 @@ public class Node {
         return this.containsBall;
     }
 
+    public void setIsGoal(boolean goal) {
+        this.goal = goal;
+    }
+
+    public boolean isGoal() {
+        return this.goal;
+    }
+
     public int getX() {
-        return this.x;
+        return this.coordinate.getX();
     }
 
     public int getY() {
-        return this.y;
+        return this.coordinate.getY();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(coordinate, node.coordinate);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Node)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-
-        Node node = (Node) obj;
-
-        return this.x == node.getX() && this.y == node.getY();
+        return Objects.hash(coordinate, containsBall);
     }
 }

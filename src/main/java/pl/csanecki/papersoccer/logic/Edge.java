@@ -1,5 +1,7 @@
 package pl.csanecki.papersoccer.logic;
 
+import java.util.Objects;
+
 public class Edge {
     private Node firstNode;
     private Node secondNode;
@@ -33,20 +35,10 @@ public class Edge {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Edge)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-
-        Edge edge = (Edge) obj;
-
-        return this.firstNode.equals(edge.getFirstNode()) &&
-                this.secondNode.equals(edge.getSecondNode());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Edge edge = (Edge) o;
+        return Objects.equals(firstNode, edge.firstNode) && Objects.equals(secondNode, edge.secondNode);
     }
 }
