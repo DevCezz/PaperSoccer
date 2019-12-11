@@ -32,6 +32,6 @@ public class Edge {
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstCoordinate, secondCoordinate);
+        return Objects.hash(firstCoordinate, secondCoordinate) * Objects.hash(secondCoordinate, firstCoordinate);
     }
 }

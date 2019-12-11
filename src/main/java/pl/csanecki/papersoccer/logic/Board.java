@@ -1,13 +1,18 @@
 package pl.csanecki.papersoccer.logic;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Board {
     private Map<Coordinate, Node> boardNodes;
+    private Set<Edge> usedEdges;
     private Coordinate ballCoordinates;
 
     public Board(int width, int height) {
+        this.usedEdges = new HashSet<>();
+
         initializeNodesNetwork(width, height);
         setBallInTheMiddle(width, height);
     }
@@ -74,7 +79,16 @@ public class Board {
         Node checkNode = boardNodes.get(checkCoordinate);
 
         if(checkNode == Node.PLAIN_FIELD) {
+            Edge edge = new Edge(checkCoordinate, ballCoordinates);
+
+            if(usedEdges.contains(edge)) {
+                throw new RuntimeException("Not allowed to move on the same edge");
+            } else {
+                usedEdges.add(edge);
+            }
+
             ballCoordinates = checkCoordinate;
+
             return "Game Underway";
         } else if(checkNode == Node.PLAYER_ONE_GOAL) {
             return "Player2 Wins";
