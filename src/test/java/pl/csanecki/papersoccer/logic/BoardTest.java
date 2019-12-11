@@ -196,4 +196,15 @@ public class BoardTest {
     void whenMoveBallAndNoWinnerThenGameUnderway() {
         assertEquals("Game Underway", board.moveBall(4));
     }
+
+    @Test
+    void givenMoveBallLeftWhenMoveBallRightThenRuntimeException() {
+        board.moveBall(4);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.moveBall(6);
+        }, "The egde is not set as used");
+
+        assertEquals("Not allowed to move on the same edge", exception.getMessage());
+    }
 }
