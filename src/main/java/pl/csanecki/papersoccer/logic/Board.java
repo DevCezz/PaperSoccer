@@ -141,6 +141,8 @@ public class Board {
 
             setNewBallCoordinates(checkCoordinate);
 
+            usedEdges.add(edge);
+
             if(isNoMoreMovementForBall()) {
                 moveBallToStartPosition();
 
@@ -162,8 +164,6 @@ public class Board {
     private void checkEdgeUsage(Edge edge) {
         if(usedEdges.contains(edge)) {
             throw new RuntimeException("Not allowed to move on the edge");
-        } else {
-            usedEdges.add(edge);
         }
     }
 
