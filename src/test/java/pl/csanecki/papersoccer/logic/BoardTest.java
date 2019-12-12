@@ -105,7 +105,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallLeftToBoardWhenMoveBallLeftThenRuntimeException() {
+    void givenMoveBallLeftToBorderWhenMoveBallLeftThenRuntimeException() {
         for (int i = 0; i < width / 2; i++) {
             board.moveBall(4);
         }
@@ -118,7 +118,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallRightToBoardWhenMoveBallRightThenRuntimeException() {
+    void givenMoveBallRightToBorderWhenMoveBallRightThenRuntimeException() {
         for (int i = 0; i < width / 2; i++) {
             board.moveBall(6);
         }
@@ -131,7 +131,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallTopToBoardEdgeWhenMoveBallTopThenWinner() {
+    void givenMoveBallTopToBorderEdgeWhenMoveBallTopThenWinner() {
         for (int i = 0; i < height / 2; i++) {
             board.moveBall(8);
         }
@@ -140,7 +140,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallTopToBoardAndOneLeftWhenMoveBallTopRightThenWinner() {
+    void givenMoveBallTopToBorderAndOneLeftWhenMoveBallTopRightThenWinner() {
         for (int i = 0; i < height / 2; i++) {
             board.moveBall(8);
         }
@@ -151,7 +151,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallTopToBoardAndOneRightWhenMoveBallTopLeftThenWinner() {
+    void givenMoveBallTopToBorderAndOneRightWhenMoveBallTopLeftThenWinner() {
         for (int i = 0; i < height / 2; i++) {
             board.moveBall(8);
         }
@@ -162,7 +162,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallDownToBoardEdgeWhenMoveBallDownThenWinner() {
+    void givenMoveBallDownToBorderEdgeWhenMoveBallDownThenWinner() {
         for (int i = 0; i < height / 2; i++) {
             board.moveBall(2);
         }
@@ -171,7 +171,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallDownToBoardAndOneLeftWhenMoveBallDowRightThenWinner() {
+    void givenMoveBallDownToBorderAndOneLeftWhenMoveBallDowRightThenWinner() {
         for (int i = 0; i < height / 2; i++) {
             board.moveBall(2);
         }
@@ -182,7 +182,7 @@ public class BoardTest {
     }
 
     @Test
-    void givenMoveBallDownToBoardAndOneRightWhenMoveBallDownLeftThenWinner() {
+    void givenMoveBallDownToBorderAndOneRightWhenMoveBallDownLeftThenWinner() {
         for (int i = 0; i < height / 2; i++) {
             board.moveBall(2);
         }
@@ -203,9 +203,67 @@ public class BoardTest {
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             board.moveBall(6);
-        }, "The egde is not set as used");
+        }, "The edge is not set as used");
 
-        assertEquals("Not allowed to move on the same edge", exception.getMessage());
+        assertEquals("Not allowed to move on the edge", exception.getMessage());
+    }
+
+    @Test
+    void givenMoveBallLeftToBorderWhenMoveBallTopThenRuntimeException() {
+        for (int i = 0; i < width / 2; i++) {
+            board.moveBall(4);
+        }
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.moveBall(8);
+        }, "The edge of border is not set");
+
+        assertEquals("Not allowed to move on the edge", exception.getMessage());
+    }
+
+    @Test
+    void givenMoveBallRightToBorderWhenMoveBallTopThenRuntimeException() {
+        for (int i = 0; i < width / 2; i++) {
+            board.moveBall(6);
+        }
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.moveBall(8);
+        }, "The edge of border is not set");
+
+        assertEquals("Not allowed to move on the edge", exception.getMessage());
+    }
+
+
+
+    @Test
+    void givenMoveBallLeftCornerOfPlayer2GoalWhenMoveBallLeftThenRuntimeException() {
+        for (int i = 0; i < height / 2; i++) {
+            board.moveBall(8);
+        }
+
+        board.moveBall(4);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.moveBall(4);
+        }, "The edge of border is not set");
+
+        assertEquals("Not allowed to move on the edge", exception.getMessage());
+    }
+
+    @Test
+    void givenMoveBallLeftCornerOfPlayer1GoalWhenMoveBallLeftThenRuntimeException() {
+        for (int i = 0; i < height / 2; i++) {
+            board.moveBall(2);
+        }
+
+        board.moveBall(4);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            board.moveBall(4);
+        }, "The edge of border is not set");
+
+        assertEquals("Not allowed to move on the edge", exception.getMessage());
     }
 
     @Test
@@ -221,5 +279,22 @@ public class BoardTest {
         Coordinate expected = new Coordinate(width / 2, height / 2);
 
         assertEquals(expected, board.getBallCoordinates(), "Ball was not restarted");
+    }
+
+    @Test
+    void givenBallAtStartAndNoMoreMovesMovementThenDraw() {
+        board.moveBall(7);
+        board.moveBall(2);
+        board.moveBall(6);
+        board.moveBall(1);
+        board.moveBall(6);
+        board.moveBall(8);
+        board.moveBall(3);
+        board.moveBall(8);
+        board.moveBall(4);
+        board.moveBall(9);
+        board.moveBall(4);
+
+        assertEquals("Draw", board.moveBall(2), "There is no expected draw");
     }
 }
