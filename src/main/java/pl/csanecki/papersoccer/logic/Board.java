@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class Board {
+    private final int boardWidth;
+    private final int boardHeight;
+
     private Map<Coordinate, Node> boardNodes;
     private Set<Edge> usedEdges;
 
@@ -13,51 +16,60 @@ public class Board {
     private Coordinate ballCoordinate;
 
     public Board(int width, int height) {
+        this.boardWidth = width;
+        this.boardHeight = height;
+
         this.boardNodes = new HashMap<>();
         this.usedEdges = new HashSet<>();
 
-        initializeNodesNetwork(width, height);
+        initializeNodesNetwork();
 
-        setUpBorderOfBoard(width, height);
-        setBallInTheMiddle(width, height);
+        setUpBordersOfBoard();
+        setBallInTheMiddle();
     }
 
-    private void initializeNodesNetwork(int width, int height) {
-        for (int x = 0; x < width + 1; x++) {
-            for (int y = 0; y < height + 1; y++) {
+    private void initializeNodesNetwork() {
+        for (int x = 0; x < boardWidth + 1; x++) {
+            for (int y = 0; y < boardHeight + 1; y++) {
                 boardNodes.put(new Coordinate(x, y), Node.PLAIN_FIELD);
             }
         }
 
-        setUpPlayersGoalsNodes(width, height);
+        setUpPlayersGoalsNodes();
     }
 
-    private void setUpPlayersGoalsNodes(int width, int height) {
-        boardNodes.put(new Coordinate(width / 2, -1), Node.PLAYER_ONE_GOAL);
-        boardNodes.put(new Coordinate(width / 2, height + 1), Node.PLAYER_TWO_GOAL);
+    private void setUpPlayersGoalsNodes() {
+        boardNodes.put(new Coordinate(boardWidth / 2, -1), Node.PLAYER_ONE_GOAL);
+        boardNodes.put(new Coordinate(boardWidth / 2, boardHeight + 1), Node.PLAYER_TWO_GOAL);
     }
 
-    private void setUpBorderOfBoard(int width, int height) {
-        for (int i = 0; i < height; i++) {
-            Coordinate firstCoordinate = new Coordinate(0, i);
-            Coordinate secondCoordinate = new Coordinate(0, i + 1);
+    private void setUpBordersOfBoard() {
+        setUpSideBordersOfBoard();
+        setUpTopAndBottomBordersOfBoard();
+    }
 
-            usedEdges.add(new Edge(firstCoordinate, secondCoordinate));
+    private void setUpSideBordersOfBoard() {
+        for (int i = 0; i < boardHeight; i++) {
+            Coordinate firstCoordinateLeft = new Coordinate(0, i);
+            Coordinate secondCoordinateLeft = new Coordinate(0, i + 1);
 
-            firstCoordinate = new Coordinate(width, i);
-            secondCoordinate = new Coordinate(width, i + 1);
+            Coordinate firstCoordinateRight = new Coordinate(boardWidth, i);
+            Coordinate secondCoordinateRight = new Coordinate(boardWidth, i + 1);
 
-            usedEdges.add(new Edge(firstCoordinate, secondCoordinate));
+            usedEdges.add(new Edge(firstCoordinateLeft, secondCoordinateLeft));
+            usedEdges.add(new Edge(firstCoordinateRight, secondCoordinateRight));
         }
+    }
 
-        for (int i = 0; i < width; i++) {
+    private void setUpTopAndBottomBordersOfBoard() {
+        for (int i = 0; i < boardWidth; i++) {
             Coordinate firstCoordinateUp = new Coordinate(i, 0);
             Coordinate secondCoordinateUp = new Coordinate(i + 1, 0);
 
-            Coordinate firstCoordinateDown = new Coordinate(i, height);
-            Coordinate secondCoordinateDown = new Coordinate(i + 1, height);
+            Coordinate firstCoordinateDown = new Coordinate(i, boardHeight);
+            Coordinate secondCoordinateDown = new Coordinate(i + 1, boardHeight);
 
-            if(firstCoordinateUp.getX() == width / 2 || secondCoordinateUp.getX() == width / 2) {
+            if(isCoveringGoal(firstCoordinateUp, secondCoordinateUp)) {
                 continue;
             }
 
@@ -66,9 +78,13 @@ public class Board {
         }
     }
 
-    private void setBallInTheMiddle(int width, int height) {
-        int middleOfWidth = (width) / 2;
-        int middleOfHeight = (height) / 2;
+    private boolean isCoveringGoal(Coordinate firstCoordinate, Coordinate secondCoordinate) {
+        return firstCoordinate.getX() == boardWidth / 2 || secondCoordinate.getX() == boardWidth / 2;
+    }
+
+    private void setBallInTheMiddle() {
+        int middleOfWidth = (boardWidth) / 2;
+        int middleOfHeight = (boardHeight) / 2;
 
         ballStatingCoordinate = new Coordinate(middleOfWidth, middleOfHeight);
         moveBallToStartPosition();
@@ -79,41 +95,35 @@ public class Board {
     }
 
     public String moveBall(int move) {
+        Coordinate checkCoordinate = getFutureMovementCoordinateByMove(move);
+
+        return checkResultOfMovement(checkCoordinate);
+    }
+
+    private Coordinate getFutureMovementCoordinateByMove(int move) {
         int currentBallX = ballCoordinate.getX();
         int currentBallY = ballCoordinate.getY();
 
-        Coordinate checkCoordinate;
-
         switch (move) {
             case 1:
-                checkCoordinate = new Coordinate(currentBallX - 1, currentBallY + 1);
-                break;
+                return new Coordinate(currentBallX - 1, currentBallY + 1);
             case 2:
-                checkCoordinate = new Coordinate(currentBallX, currentBallY + 1);
-                break;
+                return new Coordinate(currentBallX, currentBallY + 1);
             case 3:
-                checkCoordinate = new Coordinate(currentBallX + 1, currentBallY + 1);
-                break;
+                return new Coordinate(currentBallX + 1, currentBallY + 1);
             case 4:
-                checkCoordinate = new Coordinate(currentBallX - 1, currentBallY);
-                break;
+                return new Coordinate(currentBallX - 1, currentBallY);
             case 6:
-                checkCoordinate = new Coordinate(currentBallX + 1, currentBallY);
-                break;
+                return new Coordinate(currentBallX + 1, currentBallY);
             case 7:
-                checkCoordinate = new Coordinate(currentBallX - 1, currentBallY - 1);
-                break;
+                return new Coordinate(currentBallX - 1, currentBallY - 1);
             case 8:
-                checkCoordinate = new Coordinate(currentBallX, currentBallY - 1);
-                break;
+                return new Coordinate(currentBallX, currentBallY - 1);
             case 9:
-                checkCoordinate = new Coordinate(currentBallX + 1, currentBallY - 1);
-                break;
+                return new Coordinate(currentBallX + 1, currentBallY - 1);
             default:
                 throw new RuntimeException("Not allowed movement of ball");
         }
-
-        return checkResultOfMovement(checkCoordinate);
     }
 
     private String checkResultOfMovement(Coordinate checkCoordinate) {
@@ -175,5 +185,13 @@ public class Board {
 
     public Coordinate getBallCoordinates() {
         return this.ballCoordinate;
+    }
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
     }
 }

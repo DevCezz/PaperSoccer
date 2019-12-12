@@ -297,4 +297,14 @@ public class BoardTest {
 
         assertEquals("Draw", board.moveBall(2), "There is no expected draw");
     }
+
+    @Test
+    void givenBoardInitializedThenBoardWidthIsSet() {
+        assertEquals(width, board.getBoardWidth(), "There is different width of board then expected");
+    }
+
+    @Test
+    void givenBoardInitializedThenBoardHeightIsSet() {
+        assertEquals(height, board.getBoardHeight(), "There is different height of board then expected");
+    }
 }
