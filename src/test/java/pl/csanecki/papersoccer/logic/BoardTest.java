@@ -318,4 +318,12 @@ public class BoardTest {
         board.moveBall(2);
         assertEquals("Player2", board.getCurrentPlayer(), "The current player is not Player2");
     }
+
+    @Test
+    void whenMoveBallOnCoordinateWhichWasUsedThenTheSamePlayer() {
+        board.moveBall(2); //Player1
+        board.moveBall(9); //Player2
+        board.moveBall(4); //Player1
+        assertEquals("Player1", board.getCurrentPlayer(), "The current player is not Player1");
+    }
 }

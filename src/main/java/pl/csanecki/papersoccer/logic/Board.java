@@ -132,6 +132,10 @@ public class Board {
         Node checkNode = boardNodes.get(checkCoordinate);
 
         if(checkNode == Node.PLAIN_FIELD) {
+            if(!isNewCoordinateNeighborEdges(checkCoordinate)) {
+                changeCurrentPlayer();
+            }
+
             Edge edge = new Edge(checkCoordinate, ballCoordinate);
             checkEdgeUsage(edge);
 
@@ -144,8 +148,6 @@ public class Board {
                     return "Draw";
                 }
             }
-
-            changeCurrentPlayer();
 
             return "Game Underway";
         } else if(checkNode == Node.PLAYER_ONE_GOAL) {
@@ -185,6 +187,20 @@ public class Board {
         }
 
         return true;
+    }
+
+    private boolean isNewCoordinateNeighborEdges(Coordinate coordinate) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                Coordinate neighbourCoordinate = new Coordinate(coordinate.getX() + dx, coordinate.getY() + dy);
+
+                if(usedEdges.contains(new Edge(coordinate, neighbourCoordinate))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void changeCurrentPlayer() {
