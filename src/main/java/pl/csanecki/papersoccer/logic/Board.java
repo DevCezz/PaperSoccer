@@ -9,6 +9,8 @@ public class Board {
     private final int boardWidth;
     private final int boardHeight;
 
+    private String currentPlayer = "Player1";
+
     private Map<Coordinate, Node> boardNodes;
     private Set<Edge> usedEdges;
 
@@ -143,6 +145,8 @@ public class Board {
                 }
             }
 
+            changeCurrentPlayer();
+
             return "Game Underway";
         } else if(checkNode == Node.PLAYER_ONE_GOAL) {
             return "Player2 Wins";
@@ -170,7 +174,7 @@ public class Board {
             for (int dy = -1; dy <= 1; dy++) {
                 Coordinate neighbourCoordinate = new Coordinate(ballCoordinate.getX() + dx, ballCoordinate.getY() + dy);
 
-                if(dx == 0 && dy == 0) {
+                if(neighbourCoordinate.equals(ballCoordinate)) {
                     continue;
                 }
 
@@ -183,6 +187,10 @@ public class Board {
         return true;
     }
 
+    private void changeCurrentPlayer() {
+        this.currentPlayer = this.currentPlayer.equals("Player1") ? "Player2" : "Player1";
+    }
+
     public Coordinate getBallCoordinates() {
         return this.ballCoordinate;
     }
@@ -193,5 +201,9 @@ public class Board {
 
     public int getBoardHeight() {
         return boardHeight;
+    }
+
+    public String getCurrentPlayer() {
+        return this.currentPlayer;
     }
 }

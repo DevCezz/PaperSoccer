@@ -307,4 +307,15 @@ public class BoardTest {
     void givenBoardInitializedThenBoardHeightIsSet() {
         assertEquals(height, board.getBoardHeight(), "There is different height of board then expected");
     }
+
+    @Test
+    void givenBoardInitializedThenCurrentPlayerIsPlayer1() {
+        assertEquals("Player1", board.getCurrentPlayer(), "The current player is not Player1");
+    }
+
+    @Test
+    void whenFirstMoveThenPlayerChangedToPlayer2() {
+        board.moveBall(2);
+        assertEquals("Player2", board.getCurrentPlayer(), "The current player is not Player2");
+    }
 }
