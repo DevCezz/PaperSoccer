@@ -17,6 +17,8 @@ public class Board {
         this.usedEdges = new HashSet<>();
 
         initializeNodesNetwork(width, height);
+
+        setUpBorderOfBoard(width, height);
         setBallInTheMiddle(width, height);
     }
 
@@ -27,11 +29,10 @@ public class Board {
             }
         }
 
-        setUpPlayersGoals(width, height);
-        setUpBorderOfBoard(width, height);
+        setUpPlayersGoalsNodes(width, height);
     }
 
-    private void setUpPlayersGoals(int width, int height) {
+    private void setUpPlayersGoalsNodes(int width, int height) {
         boardNodes.put(new Coordinate(width / 2, -1), Node.PLAYER_ONE_GOAL);
         boardNodes.put(new Coordinate(width / 2, height + 1), Node.PLAYER_TWO_GOAL);
     }
@@ -124,10 +125,10 @@ public class Board {
 
             setNewBallCoordinates(checkCoordinate);
 
-            if(!isNoMoreMovementForBall()) {
+            if(isNoMoreMovementForBall()) {
                 moveBallToStartPosition();
 
-                if(!isNoMoreMovementForBall()) {
+                if(isNoMoreMovementForBall()) {
                     return "Draw";
                 }
             }
@@ -164,12 +165,12 @@ public class Board {
                 }
 
                 if(boardNodes.containsKey(neighbourCoordinate) && !usedEdges.contains(new Edge(ballCoordinate, neighbourCoordinate))) {
-                    return true;
+                    return false;
                 }
             }
         }
 
-        return false;
+        return true;
     }
 
     public Coordinate getBallCoordinates() {
