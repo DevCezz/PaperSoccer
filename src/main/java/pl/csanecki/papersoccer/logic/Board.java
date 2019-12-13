@@ -5,11 +5,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static pl.csanecki.papersoccer.logic.GameStatus.*;
+import static pl.csanecki.papersoccer.logic.Player.*;
+
 public class Board {
     private final int boardWidth;
     private final int boardHeight;
 
-    private String currentPlayer = "Player1";
+    private Player currentPlayer = PLAYER_ONE;
 
     private Map<Coordinate, Node> boardNodes;
     private Set<Edge> usedEdges;
@@ -24,13 +27,17 @@ public class Board {
         this.boardNodes = new HashMap<>();
         this.usedEdges = new HashSet<>();
 
-        initializeNodesNetwork();
+        initializeBoardSetUp();
 
-        setUpBordersOfBoard();
-        setBallInTheMiddle();
     }
 
-    private void initializeNodesNetwork() {
+    private void initializeBoardSetUp() {
+        setUpNodesNetwork();
+        setUpBordersOfBoard();
+        setUpBallInTheMiddle();
+    }
+
+    private void setUpNodesNetwork() {
         for (int x = 0; x < boardWidth + 1; x++) {
             for (int y = 0; y < boardHeight + 1; y++) {
                 boardNodes.put(new Coordinate(x, y), Node.PLAIN_FIELD);
@@ -54,11 +61,10 @@ public class Board {
         for (int i = 0; i < boardHeight; i++) {
             Coordinate firstCoordinateLeft = new Coordinate(0, i);
             Coordinate secondCoordinateLeft = new Coordinate(0, i + 1);
+            usedEdges.add(new Edge(firstCoordinateLeft, secondCoordinateLeft));
 
             Coordinate firstCoordinateRight = new Coordinate(boardWidth, i);
             Coordinate secondCoordinateRight = new Coordinate(boardWidth, i + 1);
-
-            usedEdges.add(new Edge(firstCoordinateLeft, secondCoordinateLeft));
             usedEdges.add(new Edge(firstCoordinateRight, secondCoordinateRight));
         }
     }
@@ -84,7 +90,7 @@ public class Board {
         return firstCoordinate.getX() == boardWidth / 2 || secondCoordinate.getX() == boardWidth / 2;
     }
 
-    private void setBallInTheMiddle() {
+    private void setUpBallInTheMiddle() {
         int middleOfWidth = (boardWidth) / 2;
         int middleOfHeight = (boardHeight) / 2;
 
@@ -96,13 +102,13 @@ public class Board {
         ballCoordinate = ballStatingCoordinate;
     }
 
-    public String moveBall(int move) {
-        Coordinate checkCoordinate = getFutureMovementCoordinateByMove(move);
+    public GameStatus play(int move) {
+        Coordinate destinationCoordinateOfBall = getDestinationCoordinateOfBall(move);
 
-        return checkResultOfMovement(checkCoordinate);
+        return returnResultOfMovement(destinationCoordinateOfBall);
     }
 
-    private Coordinate getFutureMovementCoordinateByMove(int move) {
+    private Coordinate getDestinationCoordinateOfBall(int move) {
         int currentBallX = ballCoordinate.getX();
         int currentBallY = ballCoordinate.getY();
 
@@ -128,37 +134,59 @@ public class Board {
         }
     }
 
-    private String checkResultOfMovement(Coordinate checkCoordinate) {
+    private GameStatus returnResultOfMovement(Coordinate checkCoordinate) {
         Node checkNode = boardNodes.get(checkCoordinate);
 
         if(checkNode == Node.PLAIN_FIELD) {
-            if(!isNewCoordinateNeighborEdges(checkCoordinate)) {
-                changeCurrentPlayer();
-            }
+            decideIfChangePlayerBy(checkCoordinate);
 
-            Edge edge = new Edge(checkCoordinate, ballCoordinate);
-            checkEdgeUsage(edge);
+            Edge edgeSetByBall = new Edge(checkCoordinate, ballCoordinate);
+
+            checkEdgeUsage(edgeSetByBall);
 
             setNewBallCoordinates(checkCoordinate);
-
-            usedEdges.add(edge);
+            addToEdgesNew(edgeSetByBall);
 
             if(isNoMoreMovementForBall()) {
                 moveBallToStartPosition();
 
                 if(isNoMoreMovementForBall()) {
-                    return "Draw";
+                    return DRAW;
                 }
             }
 
-            return "Game Underway";
+            return UNDERWAY;
         } else if(checkNode == Node.PLAYER_ONE_GOAL) {
-            return "Player2 Wins";
+            return PLAYER_TWO_WINS;
         } else if(checkNode == Node.PLAYER_TWO_GOAL) {
-            return "Player1 Wins";
+            return PLAYER_ONE_WINS;
         } else {
             throw new RuntimeException("Not allowed to move out of board");
         }
+    }
+
+    private void decideIfChangePlayerBy(Coordinate newCoordinate) {
+        if(!isNeighborEdges(newCoordinate)) {
+            changeCurrentPlayer();
+        }
+    }
+
+    private boolean isNeighborEdges(Coordinate coordinate) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                Coordinate neighbourCoordinate = new Coordinate(coordinate.getX() + dx, coordinate.getY() + dy);
+
+                if(usedEdges.contains(new Edge(coordinate, neighbourCoordinate))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void changeCurrentPlayer() {
+        this.currentPlayer = this.currentPlayer == PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
     }
 
     private void checkEdgeUsage(Edge edge) {
@@ -169,6 +197,10 @@ public class Board {
 
     private void setNewBallCoordinates(Coordinate coordinate) {
         this.ballCoordinate = coordinate;
+    }
+
+    private void addToEdgesNew(Edge edge) {
+        usedEdges.add(edge);
     }
 
     private boolean isNoMoreMovementForBall() {
@@ -189,24 +221,6 @@ public class Board {
         return true;
     }
 
-    private boolean isNewCoordinateNeighborEdges(Coordinate coordinate) {
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
-                Coordinate neighbourCoordinate = new Coordinate(coordinate.getX() + dx, coordinate.getY() + dy);
-
-                if(usedEdges.contains(new Edge(coordinate, neighbourCoordinate))) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private void changeCurrentPlayer() {
-        this.currentPlayer = this.currentPlayer.equals("Player1") ? "Player2" : "Player1";
-    }
-
     public Coordinate getBallCoordinates() {
         return this.ballCoordinate;
     }
@@ -219,7 +233,7 @@ public class Board {
         return boardHeight;
     }
 
-    public String getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return this.currentPlayer;
     }
 }
