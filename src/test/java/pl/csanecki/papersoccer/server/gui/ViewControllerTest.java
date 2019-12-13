@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ViewControllerTest {
 
     @Test
-    void givenHomePageShouldReturnHome() {
+    void givenGamePageShouldReturnGame() {
         ViewController viewController = new ViewController();
-        String result = viewController.renderHomePage();
-        assertEquals("home", result);
+        String result = viewController.renderGamePage();
+        assertEquals("game", result);
     }
 }
