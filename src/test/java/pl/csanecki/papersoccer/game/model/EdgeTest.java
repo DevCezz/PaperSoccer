@@ -1,10 +1,8 @@
 package pl.csanecki.papersoccer.game.model;
 
 import org.junit.jupiter.api.Test;
-import pl.csanecki.papersoccer.game.model.Coordinate;
-import pl.csanecki.papersoccer.game.model.Edge;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EdgeTest {
     @Test
