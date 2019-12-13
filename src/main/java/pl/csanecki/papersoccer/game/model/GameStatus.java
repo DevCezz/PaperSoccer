@@ -1,4 +1,4 @@
-package pl.csanecki.papersoccer.logic;
+package pl.csanecki.papersoccer.game.model;
 
 public enum GameStatus {
     UNDERWAY,

@@ -1,12 +1,14 @@
-package pl.csanecki.papersoccer.logic;
+package pl.csanecki.papersoccer.game.logic;
+
+import pl.csanecki.papersoccer.game.model.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static pl.csanecki.papersoccer.logic.GameStatus.*;
-import static pl.csanecki.papersoccer.logic.Player.*;
+import static pl.csanecki.papersoccer.game.model.GameStatus.*;
+import static pl.csanecki.papersoccer.game.model.Player.*;
 
 public class Board {
     private final int boardWidth;

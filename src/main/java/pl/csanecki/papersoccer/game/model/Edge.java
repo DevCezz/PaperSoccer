@@ -1,4 +1,4 @@
-package pl.csanecki.papersoccer.logic;
+package pl.csanecki.papersoccer.game.model;
 
 import java.util.Objects;
 

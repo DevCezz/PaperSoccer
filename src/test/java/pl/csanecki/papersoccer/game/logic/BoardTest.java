@@ -1,11 +1,12 @@
-package pl.csanecki.papersoccer.logic;
+package pl.csanecki.papersoccer.game.logic;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.csanecki.papersoccer.game.model.Coordinate;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static pl.csanecki.papersoccer.logic.GameStatus.*;
-import static pl.csanecki.papersoccer.logic.Player.*;
+import static pl.csanecki.papersoccer.game.model.GameStatus.*;
+import static pl.csanecki.papersoccer.game.model.Player.*;
 
 public class BoardTest {
     private int width = 8;

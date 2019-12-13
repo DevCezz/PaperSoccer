@@ -1,6 +1,8 @@
-package pl.csanecki.papersoccer.logic;
+package pl.csanecki.papersoccer.game.model;
 
 import org.junit.jupiter.api.Test;
+import pl.csanecki.papersoccer.game.model.Coordinate;
+import pl.csanecki.papersoccer.game.model.Edge;
 
 import static org.junit.jupiter.api.Assertions.*;
 
